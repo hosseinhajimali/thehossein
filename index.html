@@ -473,7 +473,7 @@
   <!-- ═══ FOOTER ═════════════════════════════════════════ -->
   <footer class="site-footer">
     <div class="footer-inner">
-      <p class="footer-copy">© 2026 Hossein</p>
+      <p class="footer-copy">© <span id="year"></span> Hossein</p>
       <div class="footer-links">
         <a href="mailto:hossein.hajimali@gmail.com">email</a>
         <a href="https://github.com/hosseinhajimali" target="_blank" rel="noopener">github</a>
@@ -485,6 +485,8 @@
   <!-- ═══ JS ═════════════════════════════════════════════ -->
   <script>
   (() => {
+    document.getElementById('year').textContent = new Date().getFullYear();
+
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 40);
