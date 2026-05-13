@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hossein — Front-end Developer</title>
+  <meta name="description" content="Front-end developer based in Prague. HTML, CSS, JavaScript, React, WordPress.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── Reset ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ─── Tokens ─────────────────────────────────────────── */
+    :root {
+      --bg:           #0e0b09;
+      --surface:      #181310;
+      --border:       #272019;
+      --border-hover: #3d3028;
+      --text:         #e6d3b8;
+      --text-muted:   #7a6b5a;
+      --text-dim:     #6b5c4e;
+      --accent:       #c47a4a;
+      --mono: 'JetBrains Mono', 'Fira Code', monospace;
+      --sans: 'Inter', system-ui, sans-serif;
+    }
+
+    /* ─── Base ───────────────────────────────────────────── */
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.75;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: var(--accent); color: var(--bg); }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 2px; }
+
+    /* ─── Shared layout ──────────────────────────────────── */
+    .wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 3rem;
+    }
+
+    section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-block: 9rem 5rem;
+    }
+
+    /* ─── Nav ────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      transition: background 0.3s, border-color 0.3s;
+      border-bottom: 1px solid transparent;
+    }
+
+    nav.scrolled {
+      background: rgba(14, 11, 9, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom-color: var(--border);
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.4rem 3rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-logo::before { content: '> '; }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* ─── Hero ───────────────────────────────────────────── */
+    #home { padding-block: 0; }
+
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--accent);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 1.75rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.2s ease forwards;
+    }
+
+    .hero-eyebrow::before { content: '// '; opacity: 0.5; }
+
+    .hero-name {
+      font-family: var(--mono);
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.35s ease forwards;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 0.85em;
+      background: var(--accent);
+      margin-left: 4px;
+      vertical-align: middle;
+      border-radius: 1px;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0; }
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      margin-bottom: 3.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.5s ease forwards;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: gap 0.25s;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.65s ease forwards;
+    }
+
+    .hero-cta:hover { gap: 0.9rem; }
+    .hero-cta::after { content: '→'; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── Section chrome ─────────────────────────────────── */
+    .s-label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+
+    .s-label::before { content: '/* '; }
+    .s-label::after  { content: ' */'; }
+
+    .s-title {
+      font-family: var(--mono);
+      font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: -0.025em;
+      margin-bottom: 3rem;
+      line-height: 1.15;
+    }
+
+    .rule {
+      width: 40px;
+      height: 1px;
+      background: var(--border);
+      margin-block: 2.5rem;
+    }
+
+    /* ─── About ──────────────────────────────────────────── */
+    .about-body {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      line-height: 1.9;
+      margin-bottom: 1.25rem;
+    }
+
+    .about-body strong {
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3rem;
+      margin-top: 0.5rem;
+    }
+
+    .meta-cell { display: flex; flex-direction: column; gap: 0.3rem; }
+
+    .meta-key {
+      font-family: var(--mono);
+      font-size: 0.67rem;
+      color: var(--text-dim);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .meta-val {
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+
+    /* ─── What I do ──────────────────────────────────────── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .card {
+      background: var(--bg);
+      padding: 2rem 1.75rem;
+      transition: background 0.2s;
+      cursor: default;
+    }
+
+    .card:hover { background: var(--surface); }
+
+    .card-num {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 1.25rem;
+      opacity: 0.6;
+    }
+
+    .card-name {
+      font-family: var(--mono);
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+
+    .card-desc {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+
+    /* ─── Footer ─────────────────────────────────────────── */
+    .site-footer {
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem 3rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .footer-copy {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.75rem;
+    }
+
+    .footer-links a {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--accent); }
+
+    /* ─── Responsive ─────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .wrap          { padding: 0 2rem; }
+      .nav-inner     { padding: 1.4rem 2rem; }
+      .footer-inner  { padding: 2rem; }
+      .grid          { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .wrap          { padding: 0 1.25rem; }
+      .nav-inner     { padding: 1.2rem 1.25rem; }
+      .footer-inner  { padding: 1.75rem 1.25rem; flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+
+      section        { padding-block: 7rem 3.5rem; min-height: auto; }
+      #home          { min-height: 100svh; padding-block: 0; }
+
+      .nav-links     { gap: 1.5rem; }
+      .nav-links .hide-sm { display: none; }
+
+      .grid          { grid-template-columns: 1fr; }
+      .meta-row      { gap: 1.75rem; }
+    }
+
+    @media (max-width: 380px) {
+      .hero-sub  { font-size: 0.9rem; }
+      .nav-links { gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ NAV ═══════════════════════════════════════════ -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <a href="#home" class="nav-logo">hossein</a>
+      <ul class="nav-links">
+        <li class="hide-sm"><a href="#about">about</a></li>
+        <li class="hide-sm"><a href="#work">what i do</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO ═══════════════════════════════════════════ -->
+  <section id="home">
+    <div class="wrap">
+      <p class="hero-eyebrow">Hello, world</p>
+      <h1 class="hero-name">Hossein<span class="cursor"></span></h1>
+      <p class="hero-sub">Front-end Developer &nbsp;·&nbsp; Prague, Czech Republic</p>
+      <a href="#about" class="hero-cta">get to know me</a>
+    </div>
+  </section>
+
+  <!-- ═══ ABOUT ══════════════════════════════════════════ -->
+  <section id="about">
+    <div class="wrap">
+      <p class="s-label">about</p>
+      <h2 class="s-title">A bit about me</h2>
+
+      <p class="about-body">
+        I'm an Iranian front-end developer living in <strong>Prague</strong>. I build interfaces that feel intentional — calm, purposeful, and precise. I care about the details users never see but always feel.
+      </p>
+      <p class="about-body">
+        I work with <strong>HTML</strong>, <strong>CSS</strong>, <strong>Sass</strong>, <strong>JavaScript</strong>, <strong>React</strong>, and <strong>WordPress</strong>. I believe good code is quiet code — it does its job without drama.
+      </p>
+
+      <div class="rule"></div>
+
+      <div class="meta-row">
+        <div class="meta-cell">
+          <span class="meta-key">based in</span>
+          <span class="meta-val">Prague, CZ</span>
+        </div>
+        <div class="meta-cell">
+          <span class="meta-key">role</span>
+          <span class="meta-val">Front-end Developer</span>
+        </div>
+        <div class="meta-cell">
+          <span class="meta-key">languages</span>
+          <span class="meta-val">Persian · English</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ WHAT I DO ══════════════════════════════════════ -->
+  <section id="work">
+    <div class="wrap">
+      <p class="s-label">services</p>
+      <h2 class="s-title">What I do</h2>
+
+      <div class="grid">
+        <div class="card">
+          <p class="card-num">01</p>
+          <h3 class="card-name">HTML, CSS &amp; Sass</h3>
+          <p class="card-desc">Semantic structure and precise styling. Layouts that hold their shape across every screen. I write CSS with Sass and Less for anything beyond the basics.</p>
+        </div>
+        <div class="card">
+          <p class="card-num">02</p>
+          <h3 class="card-name">JavaScript</h3>
+          <p class="card-desc">Vanilla-first, then the right tool for the job. Clean logic, minimal dependencies, maximum clarity.</p>
+        </div>
+        <div class="card">
+          <p class="card-num">03</p>
+          <h3 class="card-name">React</h3>
+          <p class="card-desc">Component-driven UIs built for reuse and maintainability. I think in components, state, and user flows. Experienced with Material UI and Ant Design.</p>
+        </div>
+        <div class="card">
+          <p class="card-num">04</p>
+          <h3 class="card-name">WordPress</h3>
+          <p class="card-desc">Custom theme development from scratch — template hierarchy, hooks, and all the details. Deep experience customizing WooCommerce to fit any business need.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p class="footer-copy">© 2026 Hossein</p>
+      <div class="footer-links">
+        <a href="mailto:hossein.hajimali@gmail.com">email</a>
+        <a href="https://github.com/hosseinhajimali" target="_blank" rel="noopener">github</a>
+        <a href="https://www.linkedin.com/in/hosseinhajimali/" target="_blank" rel="noopener">linkedin</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══ JS ═════════════════════════════════════════════ -->
+  <script>
+  (() => {
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+  })();
+  </script>
+</body>
+</html>
